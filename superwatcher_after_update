@@ -1,0 +1,19 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+TMPFILENAME="$( echo $DIR | sha1sum | awk '{ print $1 }' )"
+TMPDIR='/tmp/superwatcher_hooks'
+
+if [ ! -f $TMPDIR/$TMPFILENAME ]; then
+	exit 0
+fi
+
+REVOLD="`cat $TMPDIR/$TMPFILENAME`"
+REVNEW="$( git rev-parse HEAD )"
+
+TAGOLD="$( git describe --abbrev=0 $REVOLD )"
+TAGNEW="$( git describe --abbrev=0 $REVNEW )"
+
+if [ "$TAGOLD" != "$TAGNEW" ]; then
+	echo 'action'
+	rm $TMPDIR/$TMPFILENAME
+fi

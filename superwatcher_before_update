@@ -1,0 +1,7 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+TMPFILENAME="$( echo $DIR | sha1sum | awk '{ print $1 }' )"
+TMPDIR='/tmp/superwatcher_hooks'
+cd $DIR
+mkdir -p $TMPDIR
+git rev-parse HEAD > "$TMPDIR/$TMPFILENAME"
